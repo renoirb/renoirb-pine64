@@ -1,0 +1,22 @@
+version: "3.3"
+
+services:
+  elasticsearch:
+    image: renoirb/arm64v8-elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    networks:
+      - backend
+    deploy:
+      replicas: 6
+      update_config:
+        parallelism: 2
+        delay: 10s
+
+networks:
+  backend:
+    attachable: true
+

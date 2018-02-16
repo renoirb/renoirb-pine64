@@ -1,0 +1,10 @@
+# network.host: eth0:1
+
+discovery.zen.ping.unicast.hosts: ["10.1.10.240", "10.1.10.241", "10.1.10.242", "10.1.10.243", "10.1.10.244"]
+
+cluster.name: docker-test-cluster
+
+discovery.zen.minimum_master_nodes: 2
+discovery.zen.ping.unicast.hosts:
+  - tasks.dev_elasticsearch
+
