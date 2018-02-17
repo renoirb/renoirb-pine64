@@ -8,6 +8,9 @@ services:
       - "9300:9300"
     environment:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "cluster.name=elasticsearch"
+      - "transport.host=0.0.0.0"
+      - "http.host=0.0.0.0"
     networks:
       - backend
     deploy:

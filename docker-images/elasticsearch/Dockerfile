@@ -7,6 +7,7 @@ FROM arm64v8/alpine:3.7
 ENV ELASTICSEARCH_VERSION="6.2.1"
 COPY packages/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz /packages/
 COPY docker-entrypoint.sh /
+COPY docker-entrypoint.sh /
 
 RUN set -x \
  && apk add --no-cache --update \
@@ -27,15 +28,15 @@ RUN set -x \
  && adduser -DH -s /sbin/nologin -h /usr/share/elasticsearch elasticsearch \
  && chown -R elasticsearch:elasticsearch /usr/share/elasticsearch
 
-ENV PATH /usr/share/elasticsearch/bin:$PATH
-
 WORKDIR /usr/share/elasticsearch
 
 VOLUME /usr/share/elasticsearch/data
 
 EXPOSE 9200 9300
 
-ENTRYPOINT [ "/docker-entrypoint.sh" ]
+# ENTRYPOINT [ "/docker-entrypoint.sh" ]
+
+ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 CMD [ "/usr/share/elasticsearch/bin/elasticsearch" ]
 
