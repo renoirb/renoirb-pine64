@@ -12,8 +12,8 @@ ELASTICSEARCH_TARBALL := $(HTTP_PREFIX)-$(ELASTICSEARCH_VERSION).tar.gz
 # So we can get:
 # c9e89cbdc3f7625ac36e840c75a76fd74a7fa2081847e47601459cb01f365f38
 IMAGE_ID := $(word 2, $(subst :, ,$(shell docker image inspect --format='{{.Id}}' arm64v8-elasticsearch)))
-ES_ENV_NAME := SERVICE_NAME=local
-ES_ENV_IP := SERVICE_IP=10.1.10.240
+
+ES_ENV := -Des.network.host=0.0.0.0
 
 packages:
 	mkdir -p packages
@@ -38,9 +38,16 @@ stack:
 
 .PHONY: debug
 debug:
+	export ES_JAVA_OPTS
 	docker run -it --entrypoint=sh arm64v8-elasticsearch
 
 .PHONY: run
 run:
-	docker run -it --rm -P --env "$(ES_ENV_IP)" --env "$(ES_ENV_NAME)" arm64v8-elasticsearch
-
+	docker run \
+		-it --rm \
+		-p 9222:9200 \
+		--network="host" \
+		--env ES_JAVA_OPTS="$(ES_ENV) " \
+		--entrypoint "/docker-entrypoint.sh" \
+		arm64v8-elasticsearch \
+		elasticsearch

@@ -12,14 +12,14 @@ services:
       - "transport.host=0.0.0.0"
       - "http.host=0.0.0.0"
     networks:
-      - backend
+      - esn
     deploy:
-      replicas: 6
+      replicas: 2
       update_config:
-        parallelism: 2
+        parallelism: 1
         delay: 10s
 
 networks:
-  backend:
+  esn:
     attachable: true
 
