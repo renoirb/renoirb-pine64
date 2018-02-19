@@ -17,10 +17,13 @@ if [ "$1" = 'elasticsearch' -a "$(id -u)" = '0' ]; then
   # Change the ownership of /usr/share/elasticsearch/data to elasticsearch
   chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data
 
-  set -- gosu elasticsearch "$@"
+  set -- su-exec elasticsearch "$@"
 fi
+
+env
 
 # As argument is not related to elasticsearch,
 # then assume that user wants to run his own process,
 # for example a `bash` shell to explore this image
 exec "$@"
+
